@@ -1,0 +1,31 @@
+# SSH Config for Raspberry Pi 5 Android -> Linux Development Environment
+# Add this to your ~/.ssh/config file
+
+# Android Host (Raspberry Pi 5)
+Host pi5-android
+    HostName 192.168.0.151
+    User root
+    Port 22
+    # Add your SSH key if using key-based auth
+    # IdentityFile ~/.ssh/id_rsa_pi5
+
+# Linux Development Environment (through tunnel)
+Host pi5-linux
+    HostName localhost
+    Port 2222
+    User droid
+    ProxyJump pi5-android
+    # Forward ports for Docker and Pi-hole
+    LocalForward 2375 10.214.236.233:2375
+    LocalForward 8080 10.214.236.233:80
+    LocalForward 5353 10.214.236.233:53
+
+# Direct tunnel setup (alternative)
+Host pi5-tunnel
+    HostName 192.168.0.151
+    User root
+    LocalForward 2222 10.214.236.233:22
+    LocalForward 2375 10.214.236.233:2375
+    LocalForward 8080 10.214.236.233:80
+    LocalForward 5353 10.214.236.233:53
+
